@@ -24,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <!-- ScrollView chứa nội dung chính -->
     <ScrollView
         android:id="@+id/scrollView"
@@ -79,148 +78,14 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Danh sách chức năng ngang -->
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFunctions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:layout_marginBottom="24dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Item: Yêu thích -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="32dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="#1E88E5"
-                            app:cardElevation="2dp">
-
-                            <ImageView
-                                android:id="@+id/favorite_icon"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="Yêu thích"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_favorite" />
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Yêu thích"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp" />
-                    </LinearLayout>
-
-                    <!-- Item: Đã tải -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="32dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="#43A047"
-                            app:cardElevation="2dp">
-
-                            <ImageView
-                                android:id="@+id/download_icon"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_download"
-                                android:contentDescription="Đã tải"
-                                android:padding="8dp" />
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Đã tải"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp" />
-                    </LinearLayout>
-
-                    <!-- Item: Upload -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="32dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
-                            app:cardCornerRadius="16sp"
-                            app:cardBackgroundColor="#F4511E"
-                            app:cardElevation="2dp">
-
-                            <ImageView
-                                android:id="@+id/upload_icon"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_upload"
-                                android:contentDescription="Upload"
-                                android:padding="8dp" />
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Upload"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp" />
-                    </LinearLayout>
-
-                    <!-- Item: Nghệ sĩ -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="72dp"
-                            android:layout_height="72dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="#7B1FA2"
-                            app:cardElevation="2dp">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="Nghệ sĩ"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_artist_music" />
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nghệ sĩ"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
-                            android:layout_marginTop="12dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_function" />
 
             <!-- Phần "Nghe gần đây" -->
             <TextView
@@ -232,80 +97,14 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentSongs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:layout_marginBottom="24dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Item nghe gần đây 1 -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="16dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="3dp">
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_launcher_background"
-                                android:scaleType="centerCrop"
-                                android:contentDescription="Bài hát 1" />
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:text="Bài hát 1"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp"
-                            android:maxLines="1"
-                            android:ellipsize="end" />
-                    </LinearLayout>
-
-                    <!-- Item nghe gần đây 2 -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="16dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="3dp">
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_launcher_background"
-                                android:scaleType="centerCrop"
-                                android:contentDescription="Bài hát 2" />
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:text="Bài hát 2"
-                            android:textColor="#FFFFFF"
-                            android:textSize="14sp"
-                            android:layout_marginTop="8dp"
-                            android:maxLines="1"
-                            android:ellipsize="end" />
-                    </LinearLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_recent_song" />
 
             <!-- Phần "Playlist | Album" -->
             <TextView
@@ -318,6 +117,7 @@
                 android:layout_marginBottom="12dp" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/playlistCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -332,6 +132,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tvPlaylistName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tên Playlist/Album"
@@ -340,6 +141,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvPlaylistDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mô tả ngắn gọn"

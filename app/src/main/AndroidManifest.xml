@@ -31,7 +31,9 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".AdminActivity"/>
         <activity android:name=".ContentActivity"/>
-        <activity android:name=".UserManagemantActivity"/>
+        <activity android:name=".UserManagementActivity"/>
+        <activity android:name=".UpgradeRequestActivity" />
+        <activity android:name=".UpgradeRequestListActivity" />
     </application>
 
 </manifest>

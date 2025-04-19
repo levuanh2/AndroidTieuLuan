@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212"
@@ -42,6 +43,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lê Đức Hải"
@@ -49,6 +51,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/textViewRole"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BASIC"
@@ -62,10 +65,11 @@
             android:layout_height="wrap_content"
             android:text="Nâng cấp tài khoản"
             android:textColor="#FFFFFF"
-            android:background="#FF33FF"
+            android:background="#D500F9"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <!-- Phần Menu -->
@@ -80,6 +84,7 @@
 
         <!-- Trình phát nhạc -->
         <LinearLayout
+            android:id="@+id/music_player_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -110,6 +115,7 @@
 
         <!-- Giao diện chủ đề (với nhãn MỚI) -->
         <LinearLayout
+            android:id="@+id/theme_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -145,7 +151,8 @@
                     android:paddingHorizontal="6dp"
                     android:paddingVertical="2dp"
                     android:layout_marginStart="8dp"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
 
             <ImageView
@@ -157,6 +164,7 @@
 
         <!-- Tải nhạc -->
         <LinearLayout
+            android:id="@+id/download_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -187,6 +195,7 @@
 
         <!-- Thư viện -->
         <LinearLayout
+            android:id="@+id/library_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -217,6 +226,7 @@
 
         <!-- Thông báo -->
         <LinearLayout
+            android:id="@+id/notifications_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -247,6 +257,7 @@
 
         <!-- Khác -->
         <LinearLayout
+            android:id="@+id/other_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
