@@ -9,4 +9,5 @@
     <color name="blue">#FF0000FF</color>
     <color name="indigo">#FF4B0082</color>
     <color name="violet">#FFEE82EE</color>
+    <color name="gray">#595859</color>
 </resources>

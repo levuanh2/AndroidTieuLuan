@@ -29,6 +29,9 @@
         <activity android:name=".FavoriteActivity"/>
         <activity android:name=".DownloadActivity"/>
         <activity android:name=".RegisterActivity"/>
+        <activity android:name=".AdminActivity"/>
+        <activity android:name=".ContentActivity"/>
+        <activity android:name=".UserManagemantActivity"/>
     </application>
 
 </manifest>
