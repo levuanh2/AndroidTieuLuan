@@ -1,26 +1,22 @@
 package appnghenhac.com;
+
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class PasswordUtils {
-
     public static String hashPassword(String password) {
+        // Triển khai mã hóa mật khẩu, ví dụ dùng SHA-256
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
+            java.security.MessageDigest digest = java.security.MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes("UTF-8"));
             StringBuilder hexString = new StringBuilder();
-
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
                 if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
-
             return hexString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+            throw new RuntimeException("Error hashing password", e);
         }
     }
 }

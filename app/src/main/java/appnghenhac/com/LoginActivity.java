@@ -21,6 +21,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Khởi tạo DatabaseHelper trước khi sử dụng
+        db = new DatabaseHelper(this);
+
         // Kiểm tra trạng thái đăng nhập
         String userEmail = getCurrentUserEmail();
         if (userEmail != null) {
@@ -48,8 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
         tvForgot = findViewById(R.id.tvForgot);
-
-        db = new DatabaseHelper(this);
 
         btnLogin.setOnClickListener(v -> loginUser());
 

@@ -17,21 +17,15 @@
         android:layout_marginBottom="16dp" />
 
     <!-- Trạng thái yêu cầu -->
-    <TextView
-        android:id="@+id/txtStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trạng thái yêu cầu: Chưa gửi yêu cầu."
-        android:textSize="18sp"
-        android:layout_marginBottom="24dp" />
-
-    <!-- Nút gửi yêu cầu -->
     <Button
         android:id="@+id/btnSendRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gửi yêu cầu nâng cấp"
-        android:backgroundTint="#4CAF50"
-        android:textColor="@android:color/white"
-        android:padding="12dp" />
+        android:text="Gửi yêu cầu nâng cấp" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trạng thái yêu cầu: Chưa gửi yêu cầu." />
 </LinearLayout>
