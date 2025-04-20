@@ -1,9 +1,7 @@
 package appnghenhac.com;
 
 import android.content.Intent;
-
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +13,6 @@ public class ContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-
 
         // Kiểm tra quyền admin
         String userEmail = getCurrentUserEmail();
@@ -32,21 +29,39 @@ public class ContentActivity extends AppCompatActivity {
             return;
         }
 
-        // Thiết lập sự kiện click cho Bài hát
+        // Thiết lập sự kiện click cho các CardView
+        // Bài hát
         CardView cardSong = findViewById(R.id.card_bai_hat);
-        if (cardSong != null) {
-            cardSong.setOnClickListener(v -> {
-                Intent intent = new Intent(ContentActivity.this, SongManagementActivity.class);
-                startActivity(intent);
-            });
-        }
+        cardSong.setOnClickListener(v -> {
+            // TODO: Điều hướng đến màn hình quản lý bài hát nếu cần
+            Intent intent = new Intent(ContentActivity.this, SongManagementActivity.class);
+            startActivity(intent);
+        });
 
-        // Có thể thêm sự kiện cho các thẻ khác nếu cần
+        // Album/Playlist
+        CardView cardAlbumPlaylist = findViewById(R.id.card_album_playlist);
+        cardAlbumPlaylist.setOnClickListener(v -> {
+            Intent intent = new Intent(ContentActivity.this, AlbumPlaylistActivity.class);
+            startActivity(intent);
+        });
+
+        // Nghệ sĩ
+        CardView cardArtist = findViewById(R.id.card_nghe_si);
+        cardArtist.setOnClickListener(v -> {
+            Intent intent = new Intent(ContentActivity.this, ManageArtistsActivity.class);
+            startActivity(intent);
+        });
+
+        // Thể loại
+        CardView cardGenre = findViewById(R.id.card_the_loai);
+        cardGenre.setOnClickListener(v -> {
+            Intent intent = new Intent(ContentActivity.this, GenreActivity.class);
+            startActivity(intent);
+        });
     }
 
     private String getCurrentUserEmail() {
         SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
         return prefs.getString("user_email", null);
     }
-
 }

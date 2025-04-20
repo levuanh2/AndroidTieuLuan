@@ -1,107 +1,151 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
 
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quản lý bài hát"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Form thêm bài hát -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white"
+        android:layout_marginBottom="16dp">
 
-        <!-- Form Thêm / Sửa Bài hát -->
-        <LinearLayout
+        <!-- Tên bài hát -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên bài hát"
+            android:textSize="16sp"
+            android:textColor="#757575"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/edt_song_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@android:color/white"
-            android:elevation="4dp">
+            android:hint="Tên bài hát"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="12dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quản lý Bài hát"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
+        <!-- Nghệ sĩ (Spinner) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nghệ sĩ"
+            android:textSize="16sp"
+            android:textColor="#757575"
+            android:layout_marginBottom="4dp" />
 
-            <!-- Ảnh bìa bài hát -->
-            <ImageView
-                android:id="@+id/iv_form_song_cover"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:contentDescription="Ảnh bìa bài hát"
-                android:background="?attr/selectableItemBackgroundBorderless" />
-
-            <Button
-                android:id="@+id/btn_select_cover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chọn ảnh bìa"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:padding="8dp" />
-
-            <EditText
-                android:id="@+id/edt_song_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tên bài hát"
-                android:layout_marginTop="12dp" />
-
-            <EditText
-                android:id="@+id/edt_song_artist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tên nghệ sĩ"
-                android:layout_marginTop="8dp" />
-
-            <EditText
-                android:id="@+id/edt_song_album"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Album"
-                android:layout_marginTop="8dp" />
-
-            <EditText
-                android:id="@+id/edt_song_genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Thể loại"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/tv_selected_audio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chưa chọn file âm thanh"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="8dp" />
-
-            <Button
-                android:id="@+id/btn_select_audio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chọn file âm thanh"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:padding="8dp" />
-
-            <Button
-                android:id="@+id/btn_add_song"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Thêm bài hát"
-                android:layout_marginTop="16dp" />
-        </LinearLayout>
-
-        <!-- RecyclerView để hiển thị các bài hát -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_songs"
+        <Spinner
+            android:id="@+id/spinner_song_artist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Album -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Album"
+            android:textSize="16sp"
+            android:textColor="#757575"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/edt_song_album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Album"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Thể loại (Spinner) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thể loại"
+            android:textSize="16sp"
+            android:textColor="#757575"
+            android:layout_marginBottom="4dp" />
+
+        <Spinner
+            android:id="@+id/spinner_song_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Ảnh bìa -->
+        <ImageView
+            android:id="@+id/iv_form_song_cover"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/default_cover"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_select_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn ảnh bìa"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <!-- File âm thanh -->
+        <TextView
+            android:id="@+id/tv_selected_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chưa chọn file âm thanh"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_select_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn file âm thanh"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Nút thêm bài hát -->
+        <Button
+            android:id="@+id/btn_add_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thêm bài hát"
+            android:layout_gravity="center"
+            android:backgroundTint="#6200EE"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
-</ScrollView>
+
+    <!-- Danh sách bài hát -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_songs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

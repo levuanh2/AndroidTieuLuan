@@ -18,24 +18,24 @@
         android:padding="12dp"
         android:background="?android:attr/selectableItemBackground">
 
-        <!-- Artist Icon -->
+        <!-- Genre Icon -->
         <ImageView
-            android:id="@+id/iv_artist_icon"
+            android:id="@+id/iv_genre_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_artist"
-            android:contentDescription="Artist Icon"
+            android:src="@drawable/ic_genre"
+            android:contentDescription="Genre Icon"
             android:scaleType="centerInside"
             android:layout_marginEnd="12dp"
             app:tint="#6200EE" />
 
-        <!-- Artist Name -->
+        <!-- Genre Name -->
         <TextView
-            android:id="@+id/tv_artist_name"
+            android:id="@+id/tv_genre_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tên nghệ sĩ"
+            android:text="Tên thể loại"
             android:textSize="16sp"
             android:textColor="#212121"
             android:layout_gravity="center_vertical" />

@@ -6,14 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "music_app.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6; // Tăng version lên 6 để hỗ trợ bảng mới
 
     public static final String TABLE_USER = "User";
     public static final String COLUMN_ID = "id";
@@ -22,27 +25,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_ROLE = "role";
 
+    // Bảng Artists
+    public static final String TABLE_ARTISTS = "Artists";
+    public static final String COLUMN_ARTIST_NAME = "name";
+
+    // Bảng Genres
+    public static final String TABLE_GENRES = "Genres";
+    public static final String COLUMN_GENRE_NAME = "name";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Tạo bảng User
         String createUserTable = "CREATE TABLE " + TABLE_USER + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_FULLNAME + " TEXT, " +
                 COLUMN_EMAIL + " TEXT UNIQUE, " +
                 COLUMN_PASSWORD + " TEXT, " +
                 COLUMN_ROLE + " TEXT)";
-
         db.execSQL(createUserTable);
+
+        // Tạo bảng UpgradeRequest
         String createUpgradeRequestTable = "CREATE TABLE UpgradeRequest (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "email TEXT, " +
-                "status TEXT DEFAULT 'pending')"; // status: pending, approved, rejected
-
+                "status TEXT DEFAULT 'pending')";
         db.execSQL(createUpgradeRequestTable);
+
+        // Tạo bảng Songs
         String createSongsTable = "CREATE TABLE Songs (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
@@ -51,8 +64,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "audioUri TEXT," +
                 "album TEXT," +
                 "genre TEXT," +
-                "coverUri TEXT)"; // Đổi coverResId thành coverUri kiểu TEXT
+                "coverUri TEXT)";
         db.execSQL(createSongsTable);
+
+        // Tạo bảng Artists
+        String createArtistsTable = "CREATE TABLE " + TABLE_ARTISTS + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ARTIST_NAME + " TEXT UNIQUE)";
+        db.execSQL(createArtistsTable);
+
+        // Tạo bảng Genres
+        String createGenresTable = "CREATE TABLE " + TABLE_GENRES + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_GENRE_NAME + " TEXT UNIQUE)";
+        db.execSQL(createGenresTable);
 
         // Tạo tài khoản admin mặc định
         String adminEmail = "admin@musicapp.com";
@@ -60,13 +85,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String adminPassword = PasswordUtils.hashPassword("admin123");
         String adminRole = "admin";
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_FULLNAME, adminFullname);
-        values.put(COLUMN_EMAIL, adminEmail);
-        values.put(COLUMN_PASSWORD, adminPassword);
-        values.put(COLUMN_ROLE, adminRole);
+        ContentValues adminValues = new ContentValues();
+        adminValues.put(COLUMN_FULLNAME, adminFullname);
+        adminValues.put(COLUMN_EMAIL, adminEmail);
+        adminValues.put(COLUMN_PASSWORD, adminPassword);
+        adminValues.put(COLUMN_ROLE, adminRole);
+        db.insert(TABLE_USER, null, adminValues);
 
-        db.insert(TABLE_USER, null, values);
+        // Thêm dữ liệu mẫu cho Artists và Genres (tùy chọn)
+        ContentValues artistValues = new ContentValues();
+        artistValues.put(COLUMN_ARTIST_NAME, "Unknown Artist");
+        db.insert(TABLE_ARTISTS, null, artistValues);
+
+        ContentValues genreValues = new ContentValues();
+        genreValues.put(COLUMN_GENRE_NAME, "Unknown Genre");
+        db.insert(TABLE_GENRES, null, genreValues);
     }
 
     @Override
@@ -99,7 +132,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_ROLE + " TEXT)";
             db.execSQL(createUserTable);
         }
+        if (oldVersion < 6) {
+            // Tạo bảng Artists nếu chưa tồn tại
+            String createArtistsTable = "CREATE TABLE " + TABLE_ARTISTS + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_ARTIST_NAME + " TEXT UNIQUE)";
+            db.execSQL(createArtistsTable);
+
+            // Tạo bảng Genres nếu chưa tồn tại
+            String createGenresTable = "CREATE TABLE " + TABLE_GENRES + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_GENRE_NAME + " TEXT UNIQUE)";
+            db.execSQL(createGenresTable);
+
+            // Thêm dữ liệu mẫu cho Artists và Genres
+            ContentValues artistValues = new ContentValues();
+            artistValues.put(COLUMN_ARTIST_NAME, "Unknown Artist");
+            db.insert(TABLE_ARTISTS, null, artistValues);
+
+            ContentValues genreValues = new ContentValues();
+            genreValues.put(COLUMN_GENRE_NAME, "Unknown Genre");
+            db.insert(TABLE_GENRES, null, genreValues);
+        }
     }
+
+    // Các phương thức hiện có cho User, UpgradeRequest, Songs
     public boolean insertUser(String fullname, String email, String password, String role) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -154,14 +211,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // Gửi yêu cầu nâng cấp
     public boolean sendUpgradeRequest(String email) {
         if (email == null) {
             Log.e("DatabaseHelper", "Email is null");
             return false;
         }
 
-        // Kiểm tra xem email có tồn tại trong bảng User không
         if (!checkUserExists(email)) {
             Log.e("DatabaseHelper", "Email " + email + " does not exist in User table");
             return false;
@@ -173,7 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             Log.w("DatabaseHelper", "Upgrade request already exists for email: " + email);
-            return false; // Đã có yêu cầu, không thể gửi lại
+            return false;
         }
         cursor.close();
 
@@ -191,7 +246,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Lấy trạng thái yêu cầu nâng cấp của người dùng
     public String getUpgradeRequestStatus(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         try {
@@ -202,21 +256,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 return status;
             }
             cursor.close();
-            return null; // Nếu không có yêu cầu nào
+            return null;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            return null; // Trả về null nếu có lỗi
+            return null;
         } finally {
             db.close();
         }
     }
 
-    // Lấy danh sách người dùng có yêu cầu nâng cấp
     public ArrayList<User> getAllUsersWithUpgradeRequest() {
         ArrayList<User> users = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Kiểm tra dữ liệu trong bảng UpgradeRequest
         Cursor checkCursor = db.rawQuery("SELECT * FROM UpgradeRequest WHERE status = 'pending'", null);
         Log.d("DatabaseHelper", "Number of pending upgrade requests: " + checkCursor.getCount());
         if (checkCursor.moveToFirst()) {
@@ -232,7 +284,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         checkCursor.close();
 
-        // Sử dụng bí danh để đảm bảo tên cột trong kết quả
         String query = "SELECT u." + COLUMN_EMAIL + " AS " + COLUMN_EMAIL + "," +
                 " u." + COLUMN_FULLNAME + " AS " + COLUMN_FULLNAME + "," +
                 " u." + COLUMN_ROLE + " AS " + COLUMN_ROLE +
@@ -244,12 +295,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
-                    // Kiểm tra các cột trước khi lấy dữ liệu
                     int emailIndex = cursor.getColumnIndex(COLUMN_EMAIL);
                     int fullnameIndex = cursor.getColumnIndex(COLUMN_FULLNAME);
                     int roleIndex = cursor.getColumnIndex(COLUMN_ROLE);
 
-                    // Log nếu cột không tồn tại
                     if (emailIndex == -1) {
                         Log.e("DatabaseHelper", "Column " + COLUMN_EMAIL + " not found in query result");
                         continue;
@@ -266,7 +315,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String email = cursor.getString(emailIndex);
                     String fullname = cursor.getString(fullnameIndex);
                     String role = cursor.getString(roleIndex);
-                    if (email != null) { // Chỉ thêm nếu email không null
+                    if (email != null) {
                         users.add(new User(email, fullname, role));
                         Log.d("DatabaseHelper", "Added user with upgrade request: " + email);
                     }
@@ -284,7 +333,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return users;
     }
 
-    // Cập nhật vai trò người dùng
     public boolean updateUserRole(String email, String newRole) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -292,7 +340,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         int rowsAffected = db.update(TABLE_USER, values, COLUMN_EMAIL + " = ?", new String[]{email});
 
-        // Xóa yêu cầu nâng cấp sau khi duyệt
         if (rowsAffected > 0) {
             db.delete("UpgradeRequest", "email = ?", new String[]{email});
         }
@@ -308,7 +355,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         int rowsAffected = db.update("UpgradeRequest", values, "email = ?", new String[]{email});
 
-        // Xóa yêu cầu nếu bị từ chối
         if (rowsAffected > 0 && status.equals("rejected")) {
             db.delete("UpgradeRequest", "email = ?", new String[]{email});
         }
@@ -316,7 +362,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return rowsAffected > 0;
     }
-    public boolean insertSong(SongManagementActivity songManagementActivity, Song song) {
+
+    public boolean insertSong(Context context, Song song) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("title", song.getTitle());
@@ -325,7 +372,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("genre", song.getGenre());
         values.put("audioUri", song.getAudioUri());
         values.put("coverUri", song.getCoverUri());
-        values.put("duration", "");
+
+        String duration = "";
+        try {
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(context, Uri.parse(song.getAudioUri()));
+            duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            mmr.release();
+        } catch (Exception e) {
+            Log.e("DatabaseError", "Lỗi khi lấy thời lượng: " + e.getMessage());
+        }
+        values.put("duration", duration != null ? duration : "");
+
         long result = db.insert("Songs", null, values);
         if (result == -1) {
             Log.e("DatabaseError", "Thêm bài hát thất bại");
@@ -334,31 +392,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return true;
     }
-    // Phương thức để lấy tất cả bài hát từ cơ sở dữ liệu
+
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT * FROM Songs";
         Cursor cursor = db.rawQuery(selectQuery, null);
-
         if (cursor != null && cursor.moveToFirst()) {
             do {
+                int idIndex = cursor.getColumnIndex("id");
                 int titleIndex = cursor.getColumnIndex("title");
                 int artistIndex = cursor.getColumnIndex("artist");
                 int albumIndex = cursor.getColumnIndex("album");
                 int genreIndex = cursor.getColumnIndex("genre");
                 int audioUriIndex = cursor.getColumnIndex("audioUri");
                 int coverUriIndex = cursor.getColumnIndex("coverUri");
-
                 if (titleIndex != -1 && artistIndex != -1 && albumIndex != -1 &&
                         genreIndex != -1 && audioUriIndex != -1) {
+                    long id = idIndex != -1 ? cursor.getLong(idIndex) : -1;
                     String title = cursor.getString(titleIndex);
                     String artist = cursor.getString(artistIndex);
                     String album = cursor.getString(albumIndex);
                     String genre = cursor.getString(genreIndex);
                     String audioUri = cursor.getString(audioUriIndex);
                     String coverUri = coverUriIndex != -1 ? cursor.getString(coverUriIndex) : null;
-                    Song song = new Song(title, artist, album, genre, audioUri, coverUri);
+                    Song song = new Song(id, title, artist, album, genre, audioUri, coverUri);
                     songs.add(song);
                 }
             } while (cursor.moveToNext());
@@ -368,9 +426,166 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return songs;
-
     }
 
+    public boolean updateSong(Song song) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", song.getTitle());
+        values.put("artist", song.getArtist());
+        values.put("album", song.getAlbum());
+        values.put("genre", song.getGenre());
+        values.put("audioUri", song.getAudioUri());
+        values.put("coverUri", song.getCoverUri());
 
+        int result = db.update("Songs", values, "id = ?", new String[]{String.valueOf(song.getId())});
+        db.close();
+        return result > 0;
+    }
 
+    public boolean deleteSong(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete("Songs", "id = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return result > 0;
+    }
+
+    // Các phương thức quản lý Artists
+    public List<String> getAllArtists() {
+        List<String> artists = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_ARTIST_NAME + " FROM " + TABLE_ARTISTS, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int nameIndex = cursor.getColumnIndex(COLUMN_ARTIST_NAME);
+                if (nameIndex != -1) {
+                    String artistName = cursor.getString(nameIndex);
+                    if (artistName != null) {
+                        artists.add(artistName);
+                    }
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return artists;
+    }
+
+    public boolean insertArtist(String artistName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ARTIST_NAME, artistName);
+        long result = db.insert(TABLE_ARTISTS, null, values);
+        db.close();
+        return result != -1;
+    }
+
+    public boolean updateArtist(String oldArtistName, String newArtistName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ARTIST_NAME, newArtistName);
+        int result = db.update(TABLE_ARTISTS, values, COLUMN_ARTIST_NAME + " = ?", new String[]{oldArtistName});
+        if (result > 0) {
+            // Cập nhật artist trong bảng Songs
+            ContentValues songValues = new ContentValues();
+            songValues.put("artist", newArtistName);
+            db.update("Songs", songValues, "artist = ?", new String[]{oldArtistName});
+        }
+        db.close();
+        return result > 0;
+    }
+
+    public boolean deleteArtist(String artistName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(TABLE_ARTISTS, COLUMN_ARTIST_NAME + " = ?", new String[]{artistName});
+        if (result > 0) {
+            // Cập nhật các bài hát có artist này thành "Unknown Artist"
+            ContentValues values = new ContentValues();
+            values.put("artist", "Unknown Artist");
+            db.update("Songs", values, "artist = ?", new String[]{artistName});
+        }
+        db.close();
+        return result > 0;
+    }
+
+    // Các phương thức quản lý Genres
+    public List<String> getAllGenres() {
+        List<String> genres = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_GENRE_NAME + " FROM " + TABLE_GENRES, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int nameIndex = cursor.getColumnIndex(COLUMN_GENRE_NAME);
+                if (nameIndex != -1) {
+                    String genreName = cursor.getString(nameIndex);
+                    if (genreName != null) {
+                        genres.add(genreName);
+                    }
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return genres;
+    }
+
+    public boolean insertGenre(String genreName) {
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+
+            // Kiểm tra xem tên thể loại đã tồn tại chưa
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_GENRES + " WHERE " + COLUMN_GENRE_NAME + " = ?", new String[]{genreName});
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                Log.w("DatabaseHelper", "Genre already exists: " + genreName);
+                return false; // Trả về false nếu tên đã tồn tại
+            }
+            cursor.close();
+
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_GENRE_NAME, genreName);
+            long result = db.insert(TABLE_GENRES, null, values);
+            if (result == -1) {
+                Log.e("DatabaseHelper", "Failed to insert genre: " + genreName + ". Possible reasons: database locked, constraint violation, or disk full.");
+                return false;
+            }
+            Log.d("DatabaseHelper", "Successfully inserted genre: " + genreName);
+            return true;
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error inserting genre: " + genreName + ", Error: " + e.getMessage());
+            return false;
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+    }
+    public boolean updateGenre(String oldGenreName, String newGenreName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GENRE_NAME, newGenreName);
+        int result = db.update(TABLE_GENRES, values, COLUMN_GENRE_NAME + " = ?", new String[]{oldGenreName});
+        if (result > 0) {
+            // Cập nhật genre trong bảng Songs
+            ContentValues songValues = new ContentValues();
+            songValues.put("genre", newGenreName);
+            db.update("Songs", songValues, "genre = ?", new String[]{oldGenreName});
+        }
+        db.close();
+        return result > 0;
+    }
+
+    public boolean deleteGenre(String genreName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(TABLE_GENRES, COLUMN_GENRE_NAME + " = ?", new String[]{genreName});
+        if (result > 0) {
+            // Cập nhật các bài hát có genre này thành "Unknown Genre"
+            ContentValues values = new ContentValues();
+            values.put("genre", "Unknown Genre");
+            db.update("Songs", values, "genre = ?", new String[]{genreName});
+        }
+        db.close();
+        return result > 0;
+    }
 }

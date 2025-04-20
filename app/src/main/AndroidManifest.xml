@@ -37,6 +37,15 @@
     <activity android:name=".UpgradeRequestActivity" />
     <activity android:name=".UpgradeRequestListActivity" />
     <activity android:name=".SongManagementActivity" />
+    <activity android:name=".AddEditAlbumActivity" />
+    <activity android:name=".AddEditPlaylistActivity" />
+    <activity android:name=".AlbumPlaylistActivity" />
+    <activity android:name=".GenreActivity" />
+    <activity android:name=".ArtistActivity" />
+    <activity android:name=".ManageArtistsActivity" />
+    <activity android:name=".ManageGenresActivity" />
+    <activity android:name=".Song" />
+
     </application>
 </manifest>
 

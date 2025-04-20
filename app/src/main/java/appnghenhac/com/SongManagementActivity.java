@@ -5,14 +5,17 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -21,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongManagementActivity extends AppCompatActivity {
@@ -29,11 +33,14 @@ public class SongManagementActivity extends AppCompatActivity {
     private Uri selectedCoverUri;
     private SongAdapter songAdapter;
     private DatabaseHelper dbHelper;
-    private EditText edtTitle, edtArtist, edtAlbum, edtGenre;
+    private EditText edtTitle, edtAlbum;
+    private Spinner spinnerArtist, spinnerGenre;
     private ImageView ivCover;
     private Button btnAdd, btnSelectCover, btnSelectAudio;
     private TextView tvSelectedAudio;
     private Uri selectedAudioUri;
+    private ArrayAdapter<String> artistAdapter, genreAdapter;
+    private List<String> artistsList, genresList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +57,9 @@ public class SongManagementActivity extends AppCompatActivity {
         // Khởi tạo các view
         rvSongs = findViewById(R.id.rv_songs);
         edtTitle = findViewById(R.id.edt_song_title);
-        edtArtist = findViewById(R.id.edt_song_artist);
+        spinnerArtist = findViewById(R.id.spinner_song_artist);
         edtAlbum = findViewById(R.id.edt_song_album);
-        edtGenre = findViewById(R.id.edt_song_genre);
+        spinnerGenre = findViewById(R.id.spinner_song_genre); // Thay đổi từ EditText sang Spinner
         ivCover = findViewById(R.id.iv_form_song_cover);
         tvSelectedAudio = findViewById(R.id.tv_selected_audio);
         btnAdd = findViewById(R.id.btn_add_song);
@@ -61,6 +68,20 @@ public class SongManagementActivity extends AppCompatActivity {
 
         // Khởi tạo DatabaseHelper
         dbHelper = new DatabaseHelper(this);
+
+        // Thiết lập Spinner cho Artist
+        artistsList = new ArrayList<>(dbHelper.getAllArtists());
+        artistsList.add("Thêm nghệ sĩ mới...");
+        artistAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, artistsList);
+        artistAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerArtist.setAdapter(artistAdapter);
+
+        // Thiết lập Spinner cho Genre
+        genresList = new ArrayList<>(dbHelper.getAllGenres());
+        genresList.add("Thêm thể loại mới...");
+        genreAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genresList);
+        genreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGenre.setAdapter(genreAdapter);
 
         // Setup RecyclerView
         rvSongs.setLayoutManager(new LinearLayoutManager(this));
@@ -76,7 +97,6 @@ public class SongManagementActivity extends AppCompatActivity {
                         Uri uri = result.getData().getData();
                         if (uri != null) {
                             selectedAudioUri = uri;
-                            // Lưu quyền truy cập lâu dài
                             getContentResolver().takePersistableUriPermission(uri,
                                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             String fileName = uri.getLastPathSegment();
@@ -112,9 +132,21 @@ public class SongManagementActivity extends AppCompatActivity {
         // Sự kiện thêm bài hát
         btnAdd.setOnClickListener(v -> {
             String title = edtTitle.getText().toString().trim();
-            String artist = edtArtist.getText().toString().trim();
+            String artist = spinnerArtist.getSelectedItem().toString();
             String album = edtAlbum.getText().toString().trim();
-            String genre = edtGenre.getText().toString().trim();
+            String genre = spinnerGenre.getSelectedItem().toString();
+
+            // Kiểm tra nếu chọn "Thêm nghệ sĩ mới..."
+            if (artist.equals("Thêm nghệ sĩ mới...")) {
+                showAddArtistDialog();
+                return;
+            }
+
+            // Kiểm tra nếu chọn "Thêm thể loại mới..."
+            if (genre.equals("Thêm thể loại mới...")) {
+                showAddGenreDialog();
+                return;
+            }
 
             if (title.isEmpty() || artist.isEmpty() || selectedAudioUri == null) {
                 Toast.makeText(SongManagementActivity.this, "Vui lòng nhập đầy đủ thông tin và chọn file nhạc", Toast.LENGTH_SHORT).show();
@@ -123,7 +155,7 @@ public class SongManagementActivity extends AppCompatActivity {
 
             String coverPath = selectedCoverUri != null ? selectedCoverUri.toString() : null;
             Song newSong = new Song(title, artist, album, genre, selectedAudioUri.toString(), coverPath);
-            boolean inserted = dbHelper.insertSong(this, newSong); // Truyền Context
+            boolean inserted = dbHelper.insertSong(this, newSong);
             if (inserted) {
                 Toast.makeText(SongManagementActivity.this, "Đã thêm bài hát", Toast.LENGTH_SHORT).show();
                 List<Song> updatedList = dbHelper.getAllSongs();
@@ -131,9 +163,9 @@ public class SongManagementActivity extends AppCompatActivity {
                 songAdapter.notifyDataSetChanged();
                 // Reset form
                 edtTitle.setText("");
-                edtArtist.setText("");
+                spinnerArtist.setSelection(0);
+                spinnerGenre.setSelection(0);
                 edtAlbum.setText("");
-                edtGenre.setText("");
                 selectedAudioUri = null;
                 selectedCoverUri = null;
                 tvSelectedAudio.setText("Chưa chọn file âm thanh");
@@ -142,6 +174,66 @@ public class SongManagementActivity extends AppCompatActivity {
                 Toast.makeText(SongManagementActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showAddArtistDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thêm nghệ sĩ mới");
+
+        final EditText input = new EditText(this);
+        input.setHint("Nhập tên nghệ sĩ");
+        builder.setView(input);
+
+        builder.setPositiveButton("Thêm", (dialog, which) -> {
+            String newArtistName = input.getText().toString().trim();
+            if (newArtistName.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập tên nghệ sĩ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            boolean inserted = dbHelper.insertArtist(newArtistName);
+            if (inserted) {
+                Toast.makeText(this, "Đã thêm nghệ sĩ", Toast.LENGTH_SHORT).show();
+                artistsList.clear();
+                artistsList.addAll(dbHelper.getAllArtists());
+                artistsList.add("Thêm nghệ sĩ mới...");
+                artistAdapter.notifyDataSetChanged();
+                spinnerArtist.setSelection(artistsList.indexOf(newArtistName));
+            } else {
+                Toast.makeText(this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void showAddGenreDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thêm thể loại mới");
+
+        final EditText input = new EditText(this);
+        input.setHint("Nhập tên thể loại");
+        builder.setView(input);
+
+        builder.setPositiveButton("Thêm", (dialog, which) -> {
+            String newGenreName = input.getText().toString().trim();
+            if (newGenreName.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập tên thể loại", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            boolean inserted = dbHelper.insertGenre(newGenreName);
+            if (inserted) {
+                Toast.makeText(this, "Đã thêm thể loại", Toast.LENGTH_SHORT).show();
+                genresList.clear();
+                genresList.addAll(dbHelper.getAllGenres());
+                genresList.add("Thêm thể loại mới...");
+                genreAdapter.notifyDataSetChanged();
+                spinnerGenre.setSelection(genresList.indexOf(newGenreName));
+            } else {
+                Toast.makeText(this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     @Override
