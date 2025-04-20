@@ -8,11 +8,12 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "music_app.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     public static final String TABLE_USER = "User";
     public static final String COLUMN_ID = "id";
@@ -23,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override
@@ -41,6 +43,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "status TEXT DEFAULT 'pending')"; // status: pending, approved, rejected
 
         db.execSQL(createUpgradeRequestTable);
+        String createSongsTable = "CREATE TABLE Songs (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title TEXT," +
+                "artist TEXT," +
+                "duration TEXT," +
+                "audioUri TEXT," +
+                "album TEXT," +
+                "genre TEXT," +
+                "coverUri TEXT)"; // Đổi coverResId thành coverUri kiểu TEXT
+        db.execSQL(createSongsTable);
+
         // Tạo tài khoản admin mặc định
         String adminEmail = "admin@musicapp.com";
         String adminFullname = "Admin";
@@ -58,11 +71,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS UpgradeRequest");
-        onCreate(db);
+        if (oldVersion < 5) {
+            db.execSQL("DROP TABLE IF EXISTS Songs");
+            db.execSQL("DROP TABLE IF EXISTS UpgradeRequest");
+            String createSongsTable = "CREATE TABLE Songs (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "title TEXT," +
+                    "artist TEXT," +
+                    "duration TEXT," +
+                    "audioUri TEXT," +
+                    "album TEXT," +
+                    "genre TEXT," +
+                    "coverUri TEXT)";
+            db.execSQL(createSongsTable);
+            String createUpgradeRequestTable = "CREATE TABLE UpgradeRequest (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "email TEXT, " +
+                    "status TEXT DEFAULT 'pending')";
+            db.execSQL(createUpgradeRequestTable);
+        }
+        if (oldVersion < 3) {
+            String createUserTable = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_FULLNAME + " TEXT, " +
+                    COLUMN_EMAIL + " TEXT UNIQUE, " +
+                    COLUMN_PASSWORD + " TEXT, " +
+                    COLUMN_ROLE + " TEXT)";
+            db.execSQL(createUserTable);
+        }
     }
-
     public boolean insertUser(String fullname, String email, String password, String role) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -279,4 +316,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return rowsAffected > 0;
     }
+    public boolean insertSong(SongManagementActivity songManagementActivity, Song song) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", song.getTitle());
+        values.put("artist", song.getArtist());
+        values.put("album", song.getAlbum());
+        values.put("genre", song.getGenre());
+        values.put("audioUri", song.getAudioUri());
+        values.put("coverUri", song.getCoverUri());
+        values.put("duration", "");
+        long result = db.insert("Songs", null, values);
+        if (result == -1) {
+            Log.e("DatabaseError", "Thêm bài hát thất bại");
+            return false;
+        }
+        db.close();
+        return true;
+    }
+    // Phương thức để lấy tất cả bài hát từ cơ sở dữ liệu
+    public List<Song> getAllSongs() {
+        List<Song> songs = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM Songs";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                int titleIndex = cursor.getColumnIndex("title");
+                int artistIndex = cursor.getColumnIndex("artist");
+                int albumIndex = cursor.getColumnIndex("album");
+                int genreIndex = cursor.getColumnIndex("genre");
+                int audioUriIndex = cursor.getColumnIndex("audioUri");
+                int coverUriIndex = cursor.getColumnIndex("coverUri");
+
+                if (titleIndex != -1 && artistIndex != -1 && albumIndex != -1 &&
+                        genreIndex != -1 && audioUriIndex != -1) {
+                    String title = cursor.getString(titleIndex);
+                    String artist = cursor.getString(artistIndex);
+                    String album = cursor.getString(albumIndex);
+                    String genre = cursor.getString(genreIndex);
+                    String audioUri = cursor.getString(audioUriIndex);
+                    String coverUri = coverUriIndex != -1 ? cursor.getString(coverUriIndex) : null;
+                    Song song = new Song(title, artist, album, genre, audioUri, coverUri);
+                    songs.add(song);
+                }
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return songs;
+
+    }
+
+
+
 }

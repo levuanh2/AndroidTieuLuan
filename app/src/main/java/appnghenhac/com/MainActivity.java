@@ -100,10 +100,8 @@ public class MainActivity extends AppCompatActivity {
         rvRecentSongs = findViewById(R.id.rvRecentSongs);
         rvRecentSongs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<Song> recentSongs = new ArrayList<>();
-        recentSongs.add(new Song("Bài hát 1", R.drawable.ic_launcher_background));
-        recentSongs.add(new Song("Bài hát 2", R.drawable.ic_launcher_background));
-        // TODO: Lấy dữ liệu động từ DatabaseHelper
-        SongAdapter songAdapter = new SongAdapter(recentSongs);
+         // TODO: Lấy dữ liệu động từ DatabaseHelper
+        SongAdapter songAdapter = new SongAdapter(this, recentSongs);
         rvRecentSongs.setAdapter(songAdapter);
 
         // Thiết lập Playlist/Album
@@ -176,59 +174,6 @@ class FunctionAdapter extends RecyclerView.Adapter<FunctionAdapter.ViewHolder> {
             functionIcon = itemView.findViewById(R.id.functionIcon);
             functionName = itemView.findViewById(R.id.functionName);
             cardFunction = itemView.findViewById(R.id.cardFunction);
-        }
-    }
-}
-
-// Lớp mô hình cho bài hát
-class Song {
-    String name;
-    int imageResId;
-
-    Song(String name, int imageResId) {
-        this.name = name;
-        this.imageResId = imageResId;
-    }
-}
-
-// Adapter cho "Nghe gần đây"
-class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
-    private List<Song> songList;
-
-    SongAdapter(List<Song> songList) {
-        this.songList = songList;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recent_song, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Song song = songList.get(position);
-        holder.songName.setText(song.name);
-        holder.songImage.setImageResource(song.imageResId);
-        holder.itemView.setOnClickListener(v -> {
-            // TODO: Mở SongDetailActivity
-            Toast.makeText(holder.itemView.getContext(), "Mở bài hát: " + song.name, Toast.LENGTH_SHORT).show();
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return songList.size();
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView songImage;
-        TextView songName;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            songImage = itemView.findViewById(R.id.songImage);
-            songName = itemView.findViewById(R.id.songName);
         }
     }
 }
