@@ -6,7 +6,7 @@
     android:id="@+id/mainChart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
+    android:background="#F5F5F5"
     android:fitsSystemWindows="true"
     tools:context=".ChartMusicActivity">
 
@@ -15,11 +15,12 @@
         android:id="@+id/toolbarChart"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="4dp"
         app:contentInsetStart="18dp"
         app:title="#chartmusic"
-        app:titleTextColor="#FFFFFF"
+        app:titleTextColor="#212121"
+        app:menu="@menu/toolbar_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -49,7 +50,7 @@
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#1F1F1F">
+                app:cardBackgroundColor="#E0E0E0">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bảng xếp hạng"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
@@ -80,9 +81,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:background="#1F1F1F"
-                    android:layout_marginBottom="4dp"
+                    android:padding="12dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="8dp"
                     android:gravity="center_vertical">
 
                     <!-- Thứ hạng -->
@@ -90,9 +91,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1"
-                        android:textColor="#FFCC00"
+                        android:textColor="#FFB300"
                         android:textStyle="bold"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
+                        android:layout_marginEnd="12dp" />
+
+                    <!-- Album Art -->
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/test"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Album art"
                         android:layout_marginEnd="12dp" />
 
                     <!-- Thông tin bài hát -->
@@ -106,45 +116,54 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Twilight Zone"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:textColor="#212121"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Ariana Grande"
-                            android:textColor="#B3B3B3"
-                            android:textSize="14sp" />
+                            android:textColor="#757575"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
-                    <!-- Icon Premium hoặc bất kỳ -->
+                    <!-- Icon Premium -->
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/king"
-                        android:contentDescription="Premium icon" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_more_dots"
+                        app:tint="#212121" />
                 </LinearLayout>
 
-                <!-- Item 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:background="#1F1F1F"
-                    android:layout_marginBottom="4dp"
+                    android:padding="12dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="8dp"
                     android:gravity="center_vertical">
 
+                    <!-- Thứ hạng -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2"
-                        android:textColor="#FFFFFF"
                         android:textStyle="bold"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:layout_marginEnd="12dp" />
 
+                    <!-- Album Art -->
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/test"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Album art"
+                        android:layout_marginEnd="12dp" />
+
+                    <!-- Thông tin bài hát -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -154,39 +173,55 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sự nghiệp chương"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:text="Twilight Zone"
+                            android:textColor="#212121"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pháo"
-                            android:textColor="#B3B3B3"
-                            android:textSize="14sp" />
+                            android:text="Ariana Grande"
+                            android:textColor="#757575"
+                            android:textSize="16sp" />
                     </LinearLayout>
+
+                    <!-- Icon Premium -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_more_dots"
+                        app:tint="#212121" />
                 </LinearLayout>
 
-                <!-- Item 3 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:background="#1F1F1F"
-                    android:layout_marginBottom="4dp"
+                    android:padding="12dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="8dp"
                     android:gravity="center_vertical">
 
+                    <!-- Thứ hạng -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3"
-                        android:textColor="#FFFFFF"
                         android:textStyle="bold"
-                        android:textSize="18sp"
+                        android:textSize="22sp"
                         android:layout_marginEnd="12dp" />
 
+                    <!-- Album Art -->
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/test"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Album art"
+                        android:layout_marginEnd="12dp" />
+
+                    <!-- Thông tin bài hát -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -196,24 +231,27 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bắc Ninh"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:text="Twilight Zone"
+                            android:textColor="#212121"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hòa Minzy, Xuân Hinh, Tuấn Cry..."
-                            android:textColor="#B3B3B3"
-                            android:textSize="14sp" />
+                            android:text="Ariana Grande"
+                            android:textColor="#757575"
+                            android:textSize="16sp" />
                     </LinearLayout>
+
+                    <!-- Icon Premium -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_more_dots"
+                        app:tint="#212121" />
                 </LinearLayout>
-
-                <!-- ... Thêm các item khác nếu cần ... -->
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
@@ -222,10 +260,10 @@
         android:id="@+id/bottomNavigationChart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="8dp"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#212121"
+        app:itemTextColor="#212121"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

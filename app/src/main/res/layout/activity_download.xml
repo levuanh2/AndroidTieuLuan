@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#F5F5F5"
     android:fitsSystemWindows="true">
 
     <!-- Header -->
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:background="@drawable/background_music"
+        android:background="#6200EA"
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Back arrow -->
@@ -21,7 +21,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_back_arrow"
-            app:tint="@color/white"
+            app:tint="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_search"
             android:layout_marginEnd="16dp"
-            app:tint="@color/white"
+            app:tint="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@id/more_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,8 +41,8 @@
             android:id="@+id/more_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_more"
-            app:tint="@color/white"
+            android:src="@drawable/ic_more_dots"
+            app:tint="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đã tải"
-            android:textColor="@color/white"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/back_button"
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đã tải xuống hoặc có trên thiết bị"
-            android:textColor="#AAAAAA"
+            android:textColor="#E6E6E6"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/title_text"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,18 +80,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:backgroundTint="#1A1A1A"
+        android:backgroundTint="#F5F5F5"
         android:padding="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
-
         app:tabMode="fixed"
         app:tabGravity="fill"
         app:tabIndicatorHeight="0dp"
-        app:tabBackground="@drawable/tab_item_background"
-        app:tabSelectedTextColor="#FFFFFF"
-        app:tabTextColor="#AAAAAA">
+        app:tabSelectedTextColor="#212121"
+        app:tabTextColor="#757575">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="15dp"
@@ -109,55 +107,56 @@
             android:text="Album" />
     </com.google.android.material.tabs.TabLayout>
 
-        <!-- ViewPager2 to handle tab content switching -->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+    <!-- ViewPager2 to handle tab content switching -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/mini_player"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
-        <!-- Empty state layout (will be controlled to show/hide based on content) -->
-        <LinearLayout
-            android:id="@+id/empty_state"
+    <!-- Empty state layout (will be controlled to show/hide based on content) -->
+    <LinearLayout
+        android:id="@+id/empty_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_music_note"
+            app:tint="#212121" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginTop="80dp"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_music_note"
-                app:tint="@color/white" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bạn chưa tải về bài hát nào"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:layout_marginTop="12dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tải về bài hát bạn yêu thích để phát khi không có mạng"
-                android:textColor="#AAAAAA"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:textAlignment="center" />
-        </LinearLayout>
+            android:text="Bạn chưa tải về bài hát nào"
+            android:textColor="#212121"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tải về bài hát bạn yêu thích để phát khi không có mạng"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textAlignment="center" />
+    </LinearLayout>
+
     <!-- Mini player -->
     <LinearLayout
         android:id="@+id/mini_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/cardview_dark_background"
+        android:background="#E0E0E0"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nước Mắt Cà Sâu"
-                android:textColor="@color/white"
+                android:textColor="#212121"
                 android:textSize="14sp" />
 
             <TextView
@@ -189,7 +188,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="HIEUTHUHAI"
-                android:textColor="@color/white"
+                android:textColor="#757575"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -205,7 +204,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_heart"
                 android:layout_marginEnd="16dp"
-                app:tint="@color/white" />
+                app:tint="#212121" />
 
             <ImageView
                 android:id="@+id/play_pause_icon"
@@ -213,14 +212,14 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_play"
                 android:layout_marginEnd="16dp"
-                app:tint="@color/white"/>
+                app:tint="#212121"/>
 
             <ImageView
                 android:id="@+id/fast_forward_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_fast_forward"
-                app:tint="@color/white"/>
+                app:tint="#212121"/>
 
         </LinearLayout>
 
@@ -231,10 +230,10 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="8dp"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#212121"
+        app:itemTextColor="#212121"
         app:menu="@menu/menu_bottom_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
