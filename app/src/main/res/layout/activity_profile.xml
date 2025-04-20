@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
+    android:background="#F5F5F5"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="4dp"
         app:contentInsetStart="18dp"
+        app:menu="@menu/toolbar_menu"
         app:title="Cá nhân"
-        app:titleTextColor="#FFFFFF"
+        app:titleTextColor="#212121"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -47,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lê Đức Hải"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="18sp" />
 
             <TextView
@@ -55,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BASIC"
-                android:textColor="#B0B0B0"
+                android:textColor="#757575"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -65,7 +66,7 @@
             android:layout_height="wrap_content"
             android:text="Nâng cấp tài khoản"
             android:textColor="#FFFFFF"
-            android:background="#D500F9"
+            android:background="#E040FB"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:textSize="14sp"
@@ -80,7 +81,7 @@
         android:orientation="vertical"
         android:layout_below="@id/profile_section"
         android:padding="16dp"
-        android:background="#1E1E1E">
+        android:background="#FFFFFF">
 
         <!-- Trình phát nhạc -->
         <LinearLayout
@@ -95,14 +96,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_play"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Trình phát nhạc"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp" />
 
@@ -110,7 +111,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
 
         <!-- Giao diện chủ đề (với nhãn MỚI) -->
@@ -126,7 +127,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_theme"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -139,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Giao diện chủ đề"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#212121"
                     android:textSize="16sp" />
 
                 <TextView
@@ -147,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:text="MỚI"
                     android:textColor="#FFFFFF"
-                    android:background="#1E88E5"
+                    android:background="#2196F3"
                     android:paddingHorizontal="6dp"
                     android:paddingVertical="2dp"
                     android:layout_marginStart="8dp"
@@ -159,7 +160,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
 
         <!-- Tải nhạc -->
@@ -175,14 +176,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_download"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tải nhạc"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp" />
 
@@ -190,7 +191,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
 
         <!-- Thư viện -->
@@ -206,14 +207,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_library"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Thư viện"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp" />
 
@@ -221,7 +222,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
 
         <!-- Thông báo -->
@@ -237,14 +238,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_notifications"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Thông báo"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp" />
 
@@ -252,7 +253,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
 
         <!-- Khác -->
@@ -268,14 +269,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_more"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Khác"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp" />
 
@@ -283,7 +284,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
 
         <!-- Đăng xuất -->
@@ -299,14 +300,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_logout"
-                app:tint="#FFFFFF" />
+                app:tint="#212121" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Đăng xuất"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="16sp"
                 android:layout_marginStart="16dp" />
 
@@ -314,9 +315,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_chevron_right"
-                app:tint="#B0B0B0" />
+                app:tint="#757575" />
         </LinearLayout>
-
     </LinearLayout>
 
     <!-- Bottom Navigation -->
@@ -324,10 +324,10 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="8dp"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#212121"
+        app:itemTextColor="#212121"
         app:menu="@menu/menu_bottom_nav"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -7,32 +7,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#121212"
+    android:background="#F5F5F5"
     tools:context=".DiscoverActivity">
 
     <!-- Toolbar ở trên cùng -->
-
-    <!-- ScrollView chứa nội dung chính -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="4dp"
         app:contentInsetStart="18dp"
+        app:menu="@menu/toolbar_menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Khám phá"
-        app:titleTextColor="#FFFFFF" />
+        app:titleTextColor="#212121" />
 
+    <!-- ScrollView chứa nội dung chính -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:background="#121212"
+        android:background="#F5F5F5"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
@@ -60,7 +60,7 @@
                     android:layout_marginEnd="8dp"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="4dp"
-                    app:cardBackgroundColor="#3700B3">
+                    app:cardBackgroundColor="#6200EA">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                     android:layout_marginStart="8dp"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="4dp"
-                    app:cardBackgroundColor="#3700B3">
+                    app:cardBackgroundColor="#6200EA">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Today - V-POP HITS"
-                            android:textColor="#00FF00"
+                            android:textColor="#00C853"
                             android:textSize="16sp"
                             android:layout_marginTop="6dp" />
 
@@ -150,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Gợi Ý Cho Bạn"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#212121"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -158,14 +158,16 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_play_all"
-                    android:contentDescription="Phát tất cả" />
+                    android:contentDescription="Phát tất cả"
+                    app:tint="#212121" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_refresh"
                     android:contentDescription="Refresh"
-                    android:layout_marginStart="16dp" />
+                    android:layout_marginStart="16dp"
+                    app:tint="#212121" />
             </LinearLayout>
 
             <HorizontalScrollView
@@ -203,7 +205,7 @@
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:text="Hãy Là Chúng Ta Của Nhữ Vầy"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#212121"
                             android:textSize="14sp"
                             android:layout_marginTop="8dp"
                             android:maxLines="1"
@@ -213,7 +215,7 @@
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:text="Hoàng Tiêu Vân / LƯU MÃN"
-                            android:textColor="#B3B3B3"
+                            android:textColor="#757575"
                             android:textSize="12sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
@@ -242,7 +244,7 @@
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:text="Tống Phu"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#212121"
                             android:textSize="14sp"
                             android:layout_marginTop="8dp"
                             android:maxLines="1"
@@ -252,7 +254,7 @@
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:text="Keyo"
-                            android:textColor="#B3B3B3"
+                            android:textColor="#757575"
                             android:textSize="12sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
@@ -280,8 +282,8 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="Tình Đâu"
-                            android:textColor="#FFFFFF"
+                            android:text="Tình Đ exigĐâu"
+                            android:textColor="#212121"
                             android:textSize="14sp"
                             android:layout_marginTop="8dp"
                             android:maxLines="1"
@@ -291,7 +293,7 @@
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:text="Tăng Duy Tân"
-                            android:textColor="#B3B3B3"
+                            android:textColor="#757575"
                             android:textSize="12sp"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
@@ -303,7 +305,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nghệ Thuật Ngày"
-                android:textColor="#FFFFFF"
+                android:textColor="#212121"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
@@ -313,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="10dp"
-                app:cardBackgroundColor="#1F1F1F"
+                app:cardBackgroundColor="#E0E0E0"
                 app:cardElevation="2dp">
 
                 <LinearLayout
@@ -333,7 +335,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đạo Liễu - Đinh Tiến Đạt (Mr Dee)"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#212121"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp" />
@@ -348,21 +350,24 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_heart"
-                            android:contentDescription="Like" />
+                            android:contentDescription="Like"
+                            app:tint="#212121" />
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_play"
                             android:contentDescription="Play"
-                            android:layout_marginStart="16dp" />
+                            android:layout_marginStart="16dp"
+                            app:tint="#212121" />
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_fast_forward"
                             android:contentDescription="Fast Forward"
-                            android:layout_marginStart="16dp" />
+                            android:layout_marginStart="16dp"
+                            app:tint="#212121" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -374,10 +379,10 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#1E1E1E"
+        android:background="#FFFFFF"
         android:elevation="8dp"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#212121"
+        app:itemTextColor="#212121"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

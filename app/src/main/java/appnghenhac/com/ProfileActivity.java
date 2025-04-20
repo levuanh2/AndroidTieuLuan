@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -25,13 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        // Thiết lập Toolbar
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         // Lấy thông tin người dùng hiện tại
         String userEmail = getCurrentUserEmail();
         if (userEmail == null) {
@@ -72,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         // Khởi tạo BottomNavigationView
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         if (bottomNavigationView != null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
