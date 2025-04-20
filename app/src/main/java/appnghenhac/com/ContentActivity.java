@@ -55,7 +55,7 @@ public class ContentActivity extends AppCompatActivity {
         // Thể loại
         CardView cardGenre = findViewById(R.id.card_the_loai);
         cardGenre.setOnClickListener(v -> {
-            Intent intent = new Intent(ContentActivity.this, GenreActivity.class);
+            Intent intent = new Intent(ContentActivity.this, ManageGenresActivity.class);
             startActivity(intent);
         });
     }
