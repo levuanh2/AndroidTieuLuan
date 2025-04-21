@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <!-- Song Cover -->
+        <ImageView
+            android:id="@+id/iv_song_cover"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/default_cover"
+            android:contentDescription="Song Cover"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="12dp" />
+
+        <!-- Song Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_song_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên bài hát"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/tv_song_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nghệ sĩ"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/tv_song_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Album"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/tv_song_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thể loại"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Action Icon -->
+        <ImageView
+            android:id="@+id/iv_action_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_more"
+            android:contentDescription="More Actions"
+            app:tint="#757575"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

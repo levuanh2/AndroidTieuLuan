@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "765866358846",
+    "project_id": "nghenhac-bd633",
+    "storage_bucket": "nghenhac-bd633.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765866358846:android:42db80c7a1f41f5cccb96f",
+        "android_client_info": {
+          "package_name": "appnghenhac.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765866358846-sip1l2sa5rsamtj5ugqoqeub161cbuce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "appnghenhac.com",
+            "certificate_hash": "ecc776272385a4904793782b650b65d794c4df44"
+          }
+        },
+        {
+          "client_id": "765866358846-g67c9qgqr7epvhs7l6m02o30b0b14n9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASHazCaeovgNaXD9lYgHBr4kdHPNF1ljk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765866358846-g67c9qgqr7epvhs7l6m02o30b0b14n9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
