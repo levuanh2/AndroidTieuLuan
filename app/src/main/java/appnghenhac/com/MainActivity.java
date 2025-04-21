@@ -15,14 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
-
-import appnghenhac.com.adapter.SongAdapter;
-import appnghenhac.com.model.DatabaseHelper;
-import appnghenhac.com.model.Song;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         dbHelper = new DatabaseHelper(this);
+
+
+
 
         // Khởi tạo BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);

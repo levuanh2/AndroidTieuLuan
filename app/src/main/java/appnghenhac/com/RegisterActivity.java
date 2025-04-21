@@ -10,9 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import appnghenhac.com.model.DatabaseHelper;
-import appnghenhac.com.utils.PasswordUtils;
-
 public class RegisterActivity extends AppCompatActivity {
 
     TextInputEditText edtFullName, edtEmail, edtPassword, edtConfirmPassword;

@@ -11,10 +11,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import appnghenhac.com.adapter.AlbumPlaylistPagerAdapter;
-import appnghenhac.com.admin_activity.AddEditAlbumActivity;
-import appnghenhac.com.admin_activity.AddEditPlaylistActivity;
-
 public class AlbumPlaylistActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;

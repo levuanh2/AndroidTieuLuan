@@ -7,11 +7,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import appnghenhac.com.admin_activity.ManageArtistsActivity;
-import appnghenhac.com.admin_activity.ManageGenresActivity;
-import appnghenhac.com.admin_activity.SongManagementActivity;
-import appnghenhac.com.model.DatabaseHelper;
-
 public class ContentActivity extends AppCompatActivity {
 
     @Override
