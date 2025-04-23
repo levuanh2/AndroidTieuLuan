@@ -2,6 +2,7 @@ package appnghenhac.com.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import appnghenhac.com.PlayMusicActivity;
 import appnghenhac.com.R;
 import appnghenhac.com.model.DatabaseHelper;
 import appnghenhac.com.model.Song;
@@ -32,13 +34,24 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     private Context context;
     private List<Song> songs;
     private DatabaseHelper dbHelper;
-
+    private OnSongClickListener onSongClickListener;
     public SongAdapter(Context context, List<Song> songs) {
         this.context = context;
         this.songs = songs;
         this.dbHelper = new DatabaseHelper(context);
     }
+    // Constructor mới (3 tham số) để truyền listener
+    public SongAdapter(Context context, List<Song> songs, OnSongClickListener listener) {
+        this.context = context;
+        this.songs = songs;
+        this.dbHelper = new DatabaseHelper(context);
+        this.onSongClickListener = listener;
+    }
 
+    // Interface callback
+    public interface OnSongClickListener {
+        void onSongClick(Song song);
+    }
     public void setSongs(List<Song> songs) {
         this.songs = songs;
         notifyDataSetChanged();
@@ -50,6 +63,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         View view = LayoutInflater.from(context).inflate(R.layout.item_song, parent, false);
         return new SongViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
@@ -81,6 +95,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
                 return true;
             });
             popupMenu.show();
+        });
+        // Xử lý nhấn vào item để mở PlayMusicActivity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PlayMusicActivity.class);
+            intent.putExtra("title", song.getTitle());
+            intent.putExtra("artist", song.getArtist());
+            intent.putExtra("imageResId", song.getCoverUri()); // nếu là int
+            intent.putExtra("audioResId", song.getAudioUri()); // nếu là int
+            context.startActivity(intent);
         });
     }
 
@@ -398,4 +421,5 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             ivActionIcon = itemView.findViewById(R.id.iv_action_icon);
         }
     }
+
 }

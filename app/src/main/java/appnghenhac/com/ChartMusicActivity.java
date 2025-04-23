@@ -4,53 +4,62 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import appnghenhac.com.adapter.ChartAdapter;
+import appnghenhac.com.model.DatabaseHelper;
+import appnghenhac.com.model.Song;
 
 public class ChartMusicActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private RecyclerView recyclerViewChart;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chart_music); // Layout XML cho Chart Music
+        setContentView(R.layout.activity_chart_music);
 
-        // Khởi tạo BottomNavigationView
+        // BottomNavigationView setup
         bottomNavigationView = findViewById(R.id.bottomNavigationChart);
-
-        // Kiểm tra null để tránh crash
         if (bottomNavigationView != null) {
-            bottomNavigationView.setSelectedItemId(R.id.nav_chartmusic); // Đặt mục "Chart Music" được chọn
-
-            // Thiết lập sự kiện chọn mục trong BottomNavigationView
+            bottomNavigationView.setSelectedItemId(R.id.nav_chartmusic);
             bottomNavigationView.setOnItemSelectedListener(item -> {
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_chartmusic) {
-                    // Đã ở ChartMusicActivity, không làm gì cả
-                    return true;
-                } else if (itemId == R.id.nav_library) {
-                    // Chuyển sang MainActivity
-                    Intent intent = new Intent(ChartMusicActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    return true;
-                } else if (itemId == R.id.nav_discover) {
-                    // Chuyển sang DiscoverActivity
-                    Intent intent = new Intent(ChartMusicActivity.this, DiscoverActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    return true;
-                } else if (itemId == R.id.nav_profile) {
-                    // Chuyển sang ChartMusicActivity
-                    Intent intent = new Intent(ChartMusicActivity.this, ProfileActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                int id = item.getItemId();
+                if (id == R.id.nav_chartmusic) {
                     return true;
                 }
-                return false;
+                Intent intent;
+                if (id == R.id.nav_library) {
+                    intent = new Intent(this, MainActivity.class);
+                } else if (id == R.id.nav_discover) {
+                    intent = new Intent(this, DiscoverActivity.class);
+                } else {
+                    intent = new Intent(this, ProfileActivity.class);
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
             });
-        } else {
-            // Xử lý trường hợp không tìm thấy BottomNavigationView
-            // Có thể thêm log hoặc thông báo lỗi tại đây
         }
+
+        // RecyclerView for top chart songs
+        dbHelper = new DatabaseHelper(this);
+        recyclerViewChart = findViewById(R.id.recyclerViewChart);
+        recyclerViewChart.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Song> chartSongs = dbHelper.getSongsSortedByPlayCount();
+        ChartAdapter adapter = new ChartAdapter(this, chartSongs, this::openPlayMusicActivity);
+        recyclerViewChart.setAdapter(adapter);
+    }
+
+    private void openPlayMusicActivity(Song song) {
+        Intent intent = new Intent(this, PlayMusicActivity.class);
+        intent.putExtra("selected_song", song);
+        startActivity(intent);
     }
 }

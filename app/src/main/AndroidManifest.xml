@@ -5,7 +5,8 @@
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -31,6 +32,7 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
+        <activity android:name=".PlayMusicActivity"/>
     <activity android:name=".MainActivity"/>
     <activity android:name=".DiscoverActivity"/>
     <activity android:name=".ChartMusicActivity"/>
@@ -51,7 +53,6 @@
     <activity android:name=".ArtistActivity" />
     <activity android:name=".admin_activity.ManageArtistsActivity" />
     <activity android:name=".admin_activity.ManageGenresActivity" />
-
 
     </application>
 </manifest>

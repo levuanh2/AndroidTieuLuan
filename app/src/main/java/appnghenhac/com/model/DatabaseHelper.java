@@ -19,7 +19,7 @@ import appnghenhac.com.utils.PasswordUtils;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "music_app.db";
-    private static final int DATABASE_VERSION = 6; // Tăng version lên 6 để hỗ trợ bảng mới
+    private static final int DATABASE_VERSION = 7; // Tăng version lên 6 để hỗ trợ bảng mới
 
     public static final String TABLE_USER = "User";
     public static final String COLUMN_ID = "id";
@@ -67,7 +67,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "audioUri TEXT," +
                 "album TEXT," +
                 "genre TEXT," +
-                "coverUri TEXT)";
+                "coverUri TEXT," +
+            "playCount INTEGER DEFAULT 0)";
         db.execSQL(createSongsTable);
 
         // Tạo bảng Artists
@@ -156,6 +157,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues genreValues = new ContentValues();
             genreValues.put(COLUMN_GENRE_NAME, "Unknown Genre");
             db.insert(TABLE_GENRES, null, genreValues);
+        }
+        if (oldVersion < 7) {
+            // Thêm cột playCount cho bảng Songs
+            try {
+                db.execSQL("ALTER TABLE Songs ADD COLUMN playCount INTEGER DEFAULT 0");
+            } catch (SQLiteException e) {
+                Log.w("DatabaseHelper", "Column playCount đã tồn tại hoặc lỗi thêm cột", e);
+            }
         }
     }
 
@@ -603,6 +612,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
+    }
+    public List<Song> getSuggestedSongs() {
+        List<Song> songs = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Truy vấn dữ liệu từ bảng "songs"
+        Cursor cursor = db.query("songs", null, null, null, null, null, "id DESC");
+
+        // Kiểm tra nếu cursor không null và có dữ liệu
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Kiểm tra cột có hợp lệ không (giá trị getColumnIndex phải >= 0)
+                int idIndex = cursor.getColumnIndex("id");
+                int titleIndex = cursor.getColumnIndex("title");
+                int artistIndex = cursor.getColumnIndex("artist");
+                int albumIndex = cursor.getColumnIndex("album");
+                int genreIndex = cursor.getColumnIndex("genre");
+                int audioUriIndex = cursor.getColumnIndex("audioUri");
+                int coverUriIndex = cursor.getColumnIndex("coverUri");
+
+                if (idIndex >= 0 && titleIndex >= 0 && artistIndex >= 0 && albumIndex >= 0 &&
+                        genreIndex >= 0 && audioUriIndex >= 0 && coverUriIndex >= 0) {
+                    // Nếu tất cả các chỉ số cột hợp lệ, tạo đối tượng Song
+                    Song song = new Song(
+                            cursor.getLong(idIndex),
+                            cursor.getString(titleIndex),
+                            cursor.getString(artistIndex),
+                            cursor.getString(albumIndex),
+                            cursor.getString(genreIndex),
+                            cursor.getString(audioUriIndex),
+                            cursor.getString(coverUriIndex)
+                    );
+                    songs.add(song);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return songs;
+    }
+    public List<Song> getLatestSongs() {
+        return getSuggestedSongs(); // Ví dụ, lấy chung cho mọi loại bài hát.
+    }
+
+    public List<Song> getFeaturedSongs() {
+        return getSuggestedSongs(); // Cũng tương tự cho "nổi bật".
+    }
+    public List<Song> getSongsSortedByPlayCount() {
+        List<Song> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Songs ORDER BY playCount DESC", null);
+        if (c.moveToFirst()) {
+            do {
+                // đọc dữ liệu vào Song và thêm vào list
+            } while (c.moveToNext());
+        }
+        c.close();
+        return list;
     }
 
 }

@@ -129,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         GoogleSignInAccount account = task.getResult(ApiException.class);
                         firebaseAuthWithGoogle(account.getIdToken());
-                        Toast.makeText(this, "Đăng nhập Google", Toast.LENGTH_SHORT).show();
                     } catch (ApiException e) {
                         Toast.makeText(this, "Đăng nhập Google thất bại", Toast.LENGTH_SHORT).show();
                     }

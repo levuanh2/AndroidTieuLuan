@@ -1,6 +1,8 @@
 package appnghenhac.com.model;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable {
     private long id; // Thêm trường id
     private String title;
     private String artist;
@@ -19,7 +21,6 @@ public class Song {
         this.coverUri = coverUri;
     }
 
-    // Constructor không có id (dùng khi thêm bài hát mới)
     public Song(String title, String artist, String album, String genre, String audioUri, String coverUri) {
         this.id = -1; // -1 nghĩa là chưa có id (sẽ được gán sau khi chèn vào DB)
         this.title = title;
@@ -87,4 +88,6 @@ public class Song {
     public void setCoverUri(String coverUri) {
         this.coverUri = coverUri;
     }
+
+
 }
