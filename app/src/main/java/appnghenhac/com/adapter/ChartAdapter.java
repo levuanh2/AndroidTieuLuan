@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import appnghenhac.com.R;
@@ -23,30 +24,55 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ChartViewHol
     }
 
     private Context context;
-    private List<Song> songs;
+    private List<Song> songs = new ArrayList<>();
     private OnItemClickListener listener;
 
     public ChartAdapter(Context ctx, List<Song> list, OnItemClickListener l) {
         this.context = ctx;
-        this.songs = list;
+        this.songs = list != null ? list : new ArrayList<>();
         this.listener = l;
+    }
+
+    /** Cập nhật lại danh sách và refresh view */
+    public void setSongs(List<Song> list) {
+        this.songs = list != null ? list : new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ChartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_chart_song, parent, false);
+        View v = LayoutInflater.from(context)
+                .inflate(R.layout.item_chart_song, parent, false);
         return new ChartViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChartViewHolder holder, int position) {
         Song song = songs.get(position);
+
         holder.tvRank.setText(String.valueOf(position + 1));
         holder.tvTitle.setText(song.getTitle());
         holder.tvArtist.setText(song.getArtist());
-        Glide.with(context).load(song.getCoverUri()).into(holder.ivCover);
-        holder.itemView.setOnClickListener(v -> listener.onClick(song));
+        holder.tvPlayCount.setText(String.valueOf(song.getPlayCount()));
+
+        // Load cover
+        Glide.with(context)
+                .load(song.getCoverUri())
+                .placeholder(R.drawable.ic_discover)
+                .into(holder.ivCover);
+
+        // Item click
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(song);
+            }
+        });
+
+        // Options button (nếu bạn muốn hiện popup menu…)
+        holder.ivOptions.setOnClickListener(v -> {
+            // TODO: show popup menu (edit, delete, thêm playlist, v.v.)
+        });
     }
 
     @Override
@@ -55,16 +81,17 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.ChartViewHol
     }
 
     static class ChartViewHolder extends RecyclerView.ViewHolder {
-        TextView tvRank, tvTitle, tvArtist;
+        TextView tvRank, tvTitle, tvArtist, tvPlayCount;
         ImageView ivCover, ivOptions;
 
         ChartViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvRank = itemView.findViewById(R.id.tvRank);
-            ivCover = itemView.findViewById(R.id.ivCover);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvArtist = itemView.findViewById(R.id.tvArtist);
-            ivOptions = itemView.findViewById(R.id.ivOptions);
+            tvRank      = itemView.findViewById(R.id.tvRank);
+            ivCover     = itemView.findViewById(R.id.ivCover);
+            tvTitle     = itemView.findViewById(R.id.tvTitle);
+            tvArtist    = itemView.findViewById(R.id.tvArtist);
+            tvPlayCount = itemView.findViewById(R.id.tvPlayCount);
+            ivOptions   = itemView.findViewById(R.id.ivOptions);
         }
     }
 }

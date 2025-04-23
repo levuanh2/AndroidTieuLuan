@@ -63,7 +63,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Banner tiêu đề"
+                        android:text="August Music"
                         android:textColor="#FFFFFF"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -71,7 +71,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mô tả nội dung banner demo"
+                        android:text="Thư giãn cùng August"
                         android:textColor="#E6E6E6"
                         android:textSize="16sp"
                         android:layout_marginTop="6dp" />
@@ -88,11 +88,11 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_function" />
 
-            <!-- Phần "Nghe gần đây" -->
+            <!-- Phần "Có thể bạn đã nghe" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nghe gần đây"
+                android:text="Có thể bạn đã nghe"
                 android:textColor="#212121"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -105,7 +105,7 @@
                 android:layout_marginBottom="24dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recent_song" />
+                tools:listitem="@layout/item_song" />
 
             <!-- Phần "Playlist | Album" -->
             <TextView

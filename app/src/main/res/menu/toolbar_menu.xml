@@ -13,6 +13,5 @@
         android:icon="@drawable/ic_search"
         android:title="Tìm kiếm"
         app:showAsAction="always"
-        app:iconTint="@android:color/black"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+        app:iconTint="@android:color/black" />
 </menu>

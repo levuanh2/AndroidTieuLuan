@@ -12,33 +12,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
+
 import appnghenhac.com.adapter.SongAdapter;
 import appnghenhac.com.model.DatabaseHelper;
 import appnghenhac.com.model.Song;
-import appnghenhac.com.util.SearchHandler;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rvFunctions, rvRecentSongs;
     private DatabaseHelper dbHelper;
-    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Thiết lập Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // Kiểm tra trạng thái đăng nhập
         String userEmail = getCurrentUserEmail();
@@ -54,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         // Khởi tạo BottomNavigationView
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         if (bottomNavigationView != null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_library);
             bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -99,39 +93,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Thiết lập RecyclerView cho "Nghe gần đây"
         rvRecentSongs = findViewById(R.id.rvRecentSongs);
-        rvRecentSongs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        List<Song> recentSongs = new ArrayList<>();
-        // TODO: Lấy dữ liệu động từ DatabaseHelper
+        rvRecentSongs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        List<Song> recentSongs = dbHelper.getSuggestedSongs();
         SongAdapter songAdapter = new SongAdapter(this, recentSongs);
         rvRecentSongs.setAdapter(songAdapter);
+
 
         // Thiết lập Playlist/Album
         findViewById(R.id.playlistCard).setOnClickListener(v -> {
             // TODO: Mở PlaylistActivity
             Toast.makeText(this, "Mở Playlist", Toast.LENGTH_SHORT).show();
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-
-        android.view.MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        // Gọi SearchHandler để xử lý sự kiện tìm kiếm
-        SearchHandler.setupSearchView(this, searchView);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        if (item.getItemId() == R.id.action_microphone) {
-            Toast.makeText(this, "Microphone clicked", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private String getCurrentUserEmail() {

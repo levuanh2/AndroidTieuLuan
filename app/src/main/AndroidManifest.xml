@@ -53,8 +53,6 @@
     <activity android:name=".ArtistActivity" />
     <activity android:name=".admin_activity.ManageArtistsActivity" />
     <activity android:name=".admin_activity.ManageGenresActivity" />
-    <activity android:name=".SearchResultsActivity" />
-
 
     </application>
 </manifest>

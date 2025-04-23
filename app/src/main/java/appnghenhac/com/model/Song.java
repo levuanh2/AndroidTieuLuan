@@ -10,6 +10,7 @@ public class Song implements Serializable {
     private String genre;
     private String audioUri;
     private String coverUri;
+    private int playCount;
 
     public Song(long id, String title, String artist, String album, String genre, String audioUri, String coverUri) {
         this.id = id;
@@ -19,6 +20,7 @@ public class Song implements Serializable {
         this.genre = genre;
         this.audioUri = audioUri;
         this.coverUri = coverUri;
+
     }
 
     public Song(String title, String artist, String album, String genre, String audioUri, String coverUri) {
@@ -29,6 +31,7 @@ public class Song implements Serializable {
         this.genre = genre;
         this.audioUri = audioUri;
         this.coverUri = coverUri;
+
     }
 
     // Getter và Setter cho id
@@ -90,4 +93,10 @@ public class Song implements Serializable {
     }
 
 
+    public int getPlayCount() {
+        return playCount;
+    }
+    public void setPlayCount(int playCount) {
+        this.playCount = playCount;
+    }
 }

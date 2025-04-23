@@ -9,13 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.widget.SearchView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import appnghenhac.com.admin_activity.AdminActivity;
 import appnghenhac.com.admin_activity.UpgradeRequestActivity;
 import appnghenhac.com.model.DatabaseHelper;
-import appnghenhac.com.util.SearchHandler;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -25,10 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        // Thiết lập Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -169,28 +164,6 @@ public class ProfileActivity extends AppCompatActivity {
                         .show();
             });
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-
-        android.view.MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        // Gọi SearchHandler để xử lý sự kiện tìm kiếm
-        SearchHandler.setupSearchView(this, searchView);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        if (item.getItemId() == R.id.action_microphone) {
-            Toast.makeText(this, "Microphone clicked", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private String getCurrentUserEmail() {
