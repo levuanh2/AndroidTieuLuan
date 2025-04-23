@@ -2,13 +2,13 @@ package appnghenhac.com;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
-
 import appnghenhac.com.adapter.ChartAdapter;
 import appnghenhac.com.model.DatabaseHelper;
 import appnghenhac.com.model.Song;
@@ -16,15 +16,15 @@ import appnghenhac.com.model.Song;
 public class ChartMusicActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private RecyclerView recyclerViewChart;
-    private DatabaseHelper dbHelper;
+    private RecyclerView recyclerView;
+    private ChartAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart_music);
 
-        // BottomNavigationView setup
+        // BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottomNavigationChart);
         if (bottomNavigationView != null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_chartmusic);
@@ -32,34 +32,38 @@ public class ChartMusicActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.nav_chartmusic) {
                     return true;
-                }
-                Intent intent;
-                if (id == R.id.nav_library) {
-                    intent = new Intent(this, MainActivity.class);
+                } else if (id == R.id.nav_library) {
+                    startActivity(new Intent(this, MainActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    return true;
                 } else if (id == R.id.nav_discover) {
-                    intent = new Intent(this, DiscoverActivity.class);
-                } else {
-                    intent = new Intent(this, ProfileActivity.class);
+                    startActivity(new Intent(this, DiscoverActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    return true;
+                } else if (id == R.id.nav_profile) {
+                    startActivity(new Intent(this, ProfileActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    return true;
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
+                return false;
             });
         }
 
-        // RecyclerView for top chart songs
-        dbHelper = new DatabaseHelper(this);
-        recyclerViewChart = findViewById(R.id.recyclerViewChart);
-        recyclerViewChart.setLayoutManager(new LinearLayoutManager(this));
+        // RecyclerView setup
+        recyclerView = findViewById(R.id.recyclerViewChart);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Song> chartSongs = dbHelper.getSongsSortedByPlayCount();
-        ChartAdapter adapter = new ChartAdapter(this, chartSongs, this::openPlayMusicActivity);
-        recyclerViewChart.setAdapter(adapter);
-    }
-
-    private void openPlayMusicActivity(Song song) {
-        Intent intent = new Intent(this, PlayMusicActivity.class);
-        intent.putExtra("selected_song", song);
-        startActivity(intent);
+        // Load data from DB
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        List<Song> songs = dbHelper.getSongsSortedByPlayCount();
+        Log.d("ChartMusic", "Loaded " + songs.size() + " songs");
+        // Adapter setup with click listener
+        adapter = new ChartAdapter(this, songs, song -> {
+            // Handle item click: e.g., play song or open detail
+            Intent playIntent = new Intent(this, PlayMusicActivity.class);
+            playIntent.putExtra("songId", song.getId());
+            startActivity(playIntent);
+        });
+        recyclerView.setAdapter(adapter);
     }
 }

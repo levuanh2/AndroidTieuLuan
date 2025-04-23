@@ -49,6 +49,13 @@
             android:text="Artist Name"
             android:textColor="#757575"
             android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tvPlayCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#757575"
+            android:textSize="12sp"/>
+
     </LinearLayout>
 
     <ImageView

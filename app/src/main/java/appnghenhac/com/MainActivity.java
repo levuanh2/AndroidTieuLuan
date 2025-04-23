@@ -93,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Thiết lập RecyclerView cho "Nghe gần đây"
         rvRecentSongs = findViewById(R.id.rvRecentSongs);
-        rvRecentSongs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        List<Song> recentSongs = new ArrayList<>();
-         // TODO: Lấy dữ liệu động từ DatabaseHelper
+        rvRecentSongs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        List<Song> recentSongs = dbHelper.getSuggestedSongs();
         SongAdapter songAdapter = new SongAdapter(this, recentSongs);
         rvRecentSongs.setAdapter(songAdapter);
+
 
         // Thiết lập Playlist/Album
         findViewById(R.id.playlistCard).setOnClickListener(v -> {

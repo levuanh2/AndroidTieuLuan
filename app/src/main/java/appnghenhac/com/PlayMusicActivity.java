@@ -1,5 +1,6 @@
 package appnghenhac.com;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+import appnghenhac.com.model.DatabaseHelper;
 import appnghenhac.com.model.Song;
 
 public class PlayMusicActivity extends AppCompatActivity {
@@ -28,11 +30,13 @@ public class PlayMusicActivity extends AppCompatActivity {
     private ImageButton playPauseButton, previousButton;
     private MediaPlayer mediaPlayer;
     private Handler handler = new Handler();
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_music);
+        dbHelper = new DatabaseHelper(this);
 
         // Ánh xạ view
         backButton      = findViewById(R.id.back_button);
@@ -138,8 +142,15 @@ public class PlayMusicActivity extends AppCompatActivity {
         playPauseButton.setOnClickListener(v -> {
             if (!mediaPlayer.isPlaying()) {
                 mediaPlayer.start();
+
                 playPauseButton.setImageResource(R.drawable.ic_stop_music);
                 updateSeekBar();
+                // Tăng lượt nghe trong SQLite
+                if (song != null) {
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    db.execSQL("UPDATE Songs SET playCount = playCount + 1 WHERE id = ?", new Object[]{song.getId()});
+                    Log.d(TAG, "Đã tăng lượt nghe cho bài: " + song.getTitle());
+                }
             } else {
                 mediaPlayer.pause();
                 playPauseButton.setImageResource(R.drawable.ic_play);

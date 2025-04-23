@@ -31,13 +31,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Bảng Artists
     public static final String TABLE_ARTISTS = "Artists";
     public static final String COLUMN_ARTIST_NAME = "name";
-
+    // Songs columns
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_ARTIST = "artist";
+    public static final String COLUMN_DURATION = "duration";
+    public static final String COLUMN_AUDIO_URI = "audioUri";
+    public static final String COLUMN_ALBUM = "album";
+    public static final String COLUMN_GENRE = "genre";
+    public static final String COLUMN_COVER_URI = "coverUri";
+    public static final String COLUMN_PLAY_COUNT = "playCount";
     // Bảng Genres
     public static final String TABLE_GENRES = "Genres";
     public static final String COLUMN_GENRE_NAME = "name";
+    private static final String TABLE_SONGS ="Songs";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
     private Context context;
     @Override
@@ -159,11 +169,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert(TABLE_GENRES, null, genreValues);
         }
         if (oldVersion < 7) {
-            // Thêm cột playCount cho bảng Songs
             try {
-                db.execSQL("ALTER TABLE Songs ADD COLUMN playCount INTEGER DEFAULT 0");
+                db.execSQL("ALTER TABLE " + TABLE_SONGS + " RENAME TO Songs_old");
+                // create new
+                db.execSQL("CREATE TABLE " + TABLE_SONGS + " (" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_TITLE + " TEXT, " +
+                        COLUMN_ARTIST + " TEXT, " +
+                        COLUMN_DURATION + " TEXT, " +
+                        COLUMN_AUDIO_URI + " TEXT, " +
+                        COLUMN_ALBUM + " TEXT, " +
+                        COLUMN_GENRE + " TEXT, " +
+                        COLUMN_COVER_URI + " TEXT, " +
+                        COLUMN_PLAY_COUNT + " INTEGER DEFAULT 0)");
+                // copy
+                db.execSQL("INSERT INTO " + TABLE_SONGS + " (id, title, artist, duration, audioUri, album, genre, coverUri) " +
+                        "SELECT id, title, artist, duration, audioUri, album, genre, coverUri FROM Songs_old");
+                // drop old
+                db.execSQL("DROP TABLE Songs_old");
             } catch (SQLiteException e) {
-                Log.w("DatabaseHelper", "Column playCount đã tồn tại hoặc lỗi thêm cột", e);
+                Log.w("DatabaseHelper", "Migration failed or already applied", e);
             }
         }
     }
@@ -662,14 +687,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Song> getSongsSortedByPlayCount() {
         List<Song> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor c = db.rawQuery("SELECT * FROM Songs ORDER BY playCount DESC", null);
+
         if (c.moveToFirst()) {
             do {
-                // đọc dữ liệu vào Song và thêm vào list
+                int idIndex = c.getColumnIndex("id");
+                int titleIndex = c.getColumnIndex("title");
+                int artistIndex = c.getColumnIndex("artist");
+                int albumIndex = c.getColumnIndex("album");
+                int genreIndex = c.getColumnIndex("genre");
+                int audioUriIndex = c.getColumnIndex("audioUri");
+                int coverUriIndex = c.getColumnIndex("coverUri");
+
+                if (idIndex >= 0 && titleIndex >= 0 && artistIndex >= 0 && albumIndex >= 0 &&
+                        genreIndex >= 0 && audioUriIndex >= 0 && coverUriIndex >= 0) {
+
+                    Song song = new Song(
+                            c.getLong(idIndex),
+                            c.getString(titleIndex),
+                            c.getString(artistIndex),
+                            c.getString(albumIndex),
+                            c.getString(genreIndex),
+                            c.getString(audioUriIndex),
+                            c.getString(coverUriIndex)
+                    );
+                    list.add(song);
+                }
             } while (c.moveToNext());
         }
+
         c.close();
+        db.close();
         return list;
     }
+
 
 }
